@@ -5,7 +5,107 @@ PostData["query"] = "query dxIntlSongs {\n  dx_intl_songs(order_by: [{category: 
 PostData["operationName"] = "dxIntlSongs";
 PostData["variables"] = {};
 
+//Post到Otohi
+$.ajax({
+    type: "POST",
+    url: "https://api.otohi.me/graphql",
+    dataType: 'json',
+    data: JSON.stringify(PostData),
+    success: function(data) {
+        MusicData = data;
+    }
+});
 
+//获取音乐DB
+//https://github.com/zetaraku/arcade-songs
+$.get("https://dp4p6x0xfi5o9.cloudfront.net/maimai/data.json", function(data, status) {
+    MusicDB = data;
+});
+
+//按钮行为
+$(document).ready(function() {
+    $("#UpLoadBt").click(function() {
+        var b50Data;
+        PostData["operationName"] = "dxIntlRecordWithScores";
+        PostData["query"] = "query dxIntlRecordWithScores($nickname: String!) {\n  dx_intl_players(where: {nickname: {_eq: $nickname}}) {\n    updated_at\n    private\n    dx_intl_record {\n      card_name\n      title\n      trophy\n      rating\n      max_rating\n      rating_legacy\n      grade\n      course_rank\n      class_rank\n      __typename\n    }\n    dx_intl_scores {\n      song_id\n      deluxe\n      difficulty\n      score\n      combo_flag\n      sync_flag\n      start\n      __typename\n    }\n    __typename\n  }\n}";
+        PostData["variables"] = { nickname: $("#UserName").val() };
+        $.ajax({
+            type: "POST",
+            url: "https://api.otohi.me/graphql",
+            dataType: 'json',
+            data: JSON.stringify(PostData),
+            success: function(data) {
+                UserData = data;
+                if (UserData.data.dx_intl_players[0] != null) {
+                    b50Data = b50();
+                    ShowScore(b50Data);
+                } else {
+                    console.log("e");
+                }
+            }
+        });
+
+    });
+});
+
+function ShowScore(b50) {
+    var i = 0;
+    while (i < 35) {
+        $("#test").before(InfoCard(b50.Oldb35[i]));
+        i = i + 1;
+    }
+    i = 0;
+    while (i < 15) {
+        $("#test").before(InfoCard(b50.Newb15[i]));
+        i = i + 1;
+    }
+}
+
+function InfoCard(SongData) {
+    var DifficultColor;
+
+    if (SongData.difficulty == 0) {
+        DifficultColor = "#6fe163";
+    } else if (SongData.difficulty == 1) {
+        DifficultColor = "#f8df3a";
+    } else if (SongData.difficulty == 2) {
+        DifficultColor = "#ff828e";
+    } else if (SongData.difficulty == 3) {
+        DifficultColor = "#9f51dc";
+    } else if (SongData.difficulty == 4) {
+        DifficultColor = "#e5ddea";
+    } else {
+        DifficultColor = "black";
+    }
+
+
+    var CardText = '<div style="background-color:' + DifficultColor + ' ; background-clip: content-box;" class="mdui-col" class="mdui-card">\n' +
+        '                <div class="mdui-card-media">\n' +
+        '                    <img src="https://dp4p6x0xfi5o9.cloudfront.net/maimai/img/cover-m/' + SongData.imageName + '" />\n' +
+        '                    <div class="mdui-card-media-covered mdui-card-media-covered-gradient">\n' +
+        '                        <div class="mdui-card-primary">\n' +
+        '                            <div class="mdui-card-primary-title">' + SongData.Title + '</div>\n' +
+        '                            <div class="mdui-row-xs-5">\n' +
+        '                                <img class="mdui-col" style="width: 30%;" src="./res/image/music_icon_' + SongData.ScoreName + '.png" />\n' +
+        '                                <img class="mdui-col" style="width: 30%;" src="./res/image/music_icon_' + SongData.combo_flag + '.png" />\n' +
+        '                                <img class="mdui-col" style="width: 30%;" src="./res/image/music_icon_' + SongData.sync_flag + '.png" />\n' +
+        '                            </div>\n' +
+        '                        </div>\n' +
+        '                    </div>\n' +
+        '                </div>\n' +
+        '                <div>\n' +
+        '                    <p style="color:white;">Rating:' + SongData.Rating + '<br>Score:' + SongData.score + '%</p>\n' +
+        '                </div>\n' +
+        '            </div>';
+
+    return CardText;
+}
+
+
+
+
+
+//b50
 function b50() {
     var ScoreMix = UserData.data.dx_intl_players[0].dx_intl_scores;
     var RatingMix, Output;
@@ -42,20 +142,7 @@ function b50() {
     Newb15 = NewRating.slice(0, 15);
     console.log(Oldb35);
     console.log(Newb15);
-    Output = { Oldb35: Oldb35, Newb15: Oldb35 };
-    i = 0;
-    while (i < 35) {
-        $("#test").before('<img src="https://dp4p6x0xfi5o9.cloudfront.net/maimai/img/cover/' + Oldb35[i].imageName + '"/>');
-        $("#test").before('<p>' + Oldb35[i].Title + ' ' + Oldb35[i].Rating + ' ' + Oldb35[i].score + '</p>');
-        i = i + 1;
-    }
-    i = 0;
-    while (i < 15) {
-        $("#test").before('<img src="https://dp4p6x0xfi5o9.cloudfront.net/maimai/img/cover/' + Newb15[i].imageName + '"/>');
-        $("#test").before('<p>' + Newb15[i].Title + ' ' + Newb15[i].Rating + ' ' + Newb15[i].score + '</p>');
-        i = i + 1;
-    }
-
+    Output = { Oldb35: Oldb35, Newb15: Newb15 };
 
     return Output;
 }
@@ -156,45 +243,3 @@ function Rating(Achv, InternalLv) {
     }
     return { Rating: Rating, Title: Title };
 }
-
-
-//Post到Otohi
-$.ajax({
-    type: "POST",
-    url: "https://api.otohi.me/graphql",
-    dataType: 'json',
-    data: JSON.stringify(PostData),
-    success: function(data) {
-        MusicData = data;
-    }
-});
-
-//获取音乐DB
-//https://github.com/zetaraku/arcade-songs
-$.get("https://dp4p6x0xfi5o9.cloudfront.net/maimai/data.json", function(data, status) {
-    MusicDB = data;
-});
-
-
-$(document).ready(function() {
-    $("#UpLoadBt").click(function() {
-        PostData["operationName"] = "dxIntlRecordWithScores";
-        PostData["query"] = "query dxIntlRecordWithScores($nickname: String!) {\n  dx_intl_players(where: {nickname: {_eq: $nickname}}) {\n    updated_at\n    private\n    dx_intl_record {\n      card_name\n      title\n      trophy\n      rating\n      max_rating\n      rating_legacy\n      grade\n      course_rank\n      class_rank\n      __typename\n    }\n    dx_intl_scores {\n      song_id\n      deluxe\n      difficulty\n      score\n      combo_flag\n      sync_flag\n      start\n      __typename\n    }\n    __typename\n  }\n}";
-        PostData["variables"] = { nickname: $("#UserName").val() };
-        $.ajax({
-            type: "POST",
-            url: "https://api.otohi.me/graphql",
-            dataType: 'json',
-            data: JSON.stringify(PostData),
-            success: function(data) {
-                UserData = data;
-                if (UserData.data.dx_intl_players[0] != null) {
-                    b50();
-                } else {
-                    console.log("e");
-                }
-            }
-        });
-
-    });
-});
