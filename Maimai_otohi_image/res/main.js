@@ -49,17 +49,26 @@ $(document).ready(function() {
     });
 
     $("#OutputImage").click(function() {
-        html2canvas(document.body, {
-            useCORS: true, // 允许跨域
-            onrendered: function(canvas) {
-                document.body.appendChild(canvas);
-            }
+        html2canvas(document.querySelector("#GamerData"), {
+            allowTaint: true,
+            backgroundColor: "#51bcf3"
+
+        }).then(function(canvas) {
+
+            document.body.appendChild(canvas);
+
         });
+
     });
+
 });
 
 
+
+
+
 function ShowScore(b50) {
+
     var i = 0;
     while (i < 35) {
         $("#B35").before(InfoCard(b50.Oldb35[i]));
@@ -74,8 +83,33 @@ function ShowScore(b50) {
 }
 
 function ShowUserInfo(UserInfo) {
+    //没想好起啥名字直接用的プレート
+    var Pureeto
+    if (UserInfo.rating >= 15000) {
+        Pureeto = "rainbow";
+    } else if (UserInfo.rating >= 14500) {
+        Pureeto = "platinum";
+    } else if (UserInfo.rating >= 14000) {
+        Pureeto = "gold";
+    } else if (UserInfo.rating >= 13000) {
+        Pureeto = "silver";
+    } else if (UserInfo.rating >= 12000) {
+        Pureeto = "bronze";
+    } else if (UserInfo.rating >= 10000) {
+        Pureeto = "purple";
+    } else if (UserInfo.rating >= 7000) {
+        Pureeto = "red";
+    } else if (UserInfo.rating >= 4000) {
+        Pureeto = "orange";
+    } else if (UserInfo.rating >= 2000) {
+        Pureeto = "green";
+    } else if (UserInfo.rating >= 1000) {
+        Pureeto = "blue";
+    } else {
+        Pureeto = "normal";
+    }
     var InfoText = '<div class="UserInfo">\n' +
-        '                <div class="rating" style="background-image: url(&quot;./res/image/ratings/platinum.svg&quot;);">' + UserInfo.rating + '</div>\n' +
+        '                <div class="rating" style="background-image: url(&quot;./res/image/ratings/' + Pureeto + '.svg&quot;);">' + UserInfo.rating + '</div>\n' +
         '            </div>\n' +
         '            <div class="UserInfo">\n' +
         '                <div class="name">' + UserInfo.card_name + '</div>\n' +
