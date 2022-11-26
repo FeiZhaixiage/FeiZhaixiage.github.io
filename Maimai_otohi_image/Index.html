@@ -10,13 +10,14 @@
 
     <!-- MDUI CSS -->
     <link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css" />
+    <link rel="stylesheet" href="./res/main.css" />
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script src="res/main.js"></script>
 
     <title>MaimaiDX Rating Image</title>
 </head>
 
-<body class="mdui-theme-primary-pink mdui-theme-accent-pink">
+<body style="background: #51bcf3;" class="mdui-theme-primary-pink mdui-theme-accent-pink">
 
     <div class="mdui-container">
         <h1>MaimaiDX Rating Image</h1>
@@ -24,10 +25,23 @@
             <label class="mdui-textfield-label">Username</label>
             <input class="mdui-textfield-input" value="" id="UserName" />
         </div>
-        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="UpLoadBt">Button</button>
-        <div class="mdui-row-xs-5 ">
-            <p id="test"></p>
+        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="UpLoadBt">开始！</button>
+        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="OutputImage">输出图片！</button>
+        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="Help">这玩意咋用我不会</button>
+        <div id="GamerData">
+            <h1>玩家信息</h1>
+            <div id="UserBox">
+            </div>
+            <h1>B35</h1>
+            <div class="mdui-row-xs-5 ">
+                <div id="B35"></div>
+            </div>
+            <h1>B15</h1>
+            <div class="mdui-row-xs-5 ">
+                <div id="B15"></div>
+            </div>
         </div>
+
 
     </div>
 

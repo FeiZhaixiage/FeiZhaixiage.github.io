@@ -38,6 +38,7 @@ $(document).ready(function() {
                 UserData = data;
                 if (UserData.data.dx_intl_players[0] != null) {
                     b50Data = b50();
+                    ShowUserInfo(UserData.data.dx_intl_players[0].dx_intl_record);
                     ShowScore(b50Data);
                 } else {
                     console.log("e");
@@ -51,14 +52,31 @@ $(document).ready(function() {
 function ShowScore(b50) {
     var i = 0;
     while (i < 35) {
-        $("#test").before(InfoCard(b50.Oldb35[i]));
+        $("#B35").before(InfoCard(b50.Oldb35[i]));
         i = i + 1;
     }
+
     i = 0;
     while (i < 15) {
-        $("#test").before(InfoCard(b50.Newb15[i]));
+        $("#B15").before(InfoCard(b50.Newb15[i]));
         i = i + 1;
     }
+}
+
+function ShowUserInfo(UserInfo) {
+    var InfoText = '<div class="UserInfo">\n' +
+        '                <div class="rating" style="background-image: url(&quot;./res/image/ratings/platinum.svg&quot;);">' + UserInfo.rating + '</div>\n' +
+        '            </div>\n' +
+        '            <div class="UserInfo">\n' +
+        '                <div class="name">' + UserInfo.card_name + '</div>\n' +
+        '                <div>\n' +
+        '                    <img src="./res/image/course_ranks/' + UserInfo.course_rank + '.svg" alt="' + UserInfo.course_rank + '" class="rank">\n' +
+        '                    <img src="./res/image/class_ranks/' + UserInfo.class_rank + '.svg" alt="' + UserInfo.class_rank + '" class="rank">\n' +
+        '                </div>\n' +
+        '            </div>\n' +
+        '            <div class="' + UserInfo.trophy + ' trophy" aria-label="' + UserInfo.title + '">' + UserInfo.title + '</div>';
+
+    $("#UserBox").html(InfoText);
 }
 
 function InfoCard(SongData) {
@@ -79,22 +97,23 @@ function InfoCard(SongData) {
     }
 
 
-    var CardText = '<div style="background-color:' + DifficultColor + ' ; background-clip: content-box;" class="mdui-col" class="mdui-card">\n' +
+    var CardText = '<div style="background-color:' + DifficultColor + ' ; background-clip: content-box; padding-top: 5px;" class="mdui-col" class="mdui-card">\n' +
         '                <div class="mdui-card-media">\n' +
         '                    <img src="https://dp4p6x0xfi5o9.cloudfront.net/maimai/img/cover-m/' + SongData.imageName + '" />\n' +
         '                    <div class="mdui-card-media-covered mdui-card-media-covered-gradient">\n' +
         '                        <div class="mdui-card-primary">\n' +
-        '                            <div class="mdui-card-primary-title">' + SongData.Title + '</div>\n' +
+        '                            <div style="white-space:nowrap; text-overflow:ellipsis; word-break:break-all; overflow:hidden;" class="">' + SongData.Title + '</div>\n' +
         '                            <div class="mdui-row-xs-5">\n' +
-        '                                <img class="mdui-col" style="width: 30%;" src="./res/image/music_icon_' + SongData.ScoreName + '.png" />\n' +
-        '                                <img class="mdui-col" style="width: 30%;" src="./res/image/music_icon_' + SongData.combo_flag + '.png" />\n' +
-        '                                <img class="mdui-col" style="width: 30%;" src="./res/image/music_icon_' + SongData.sync_flag + '.png" />\n' +
+        '                                <img class="mdui-col" style="width: 25%;" src="./res/image/rate/music_icon_' + SongData.ScoreName + '.png" />\n' +
+        '                                <img class="mdui-col" style="width: 25%;" src="./res/image/flags/music_icon_' + SongData.combo_flag + '.png" />\n' +
+        '                                <img class="mdui-col" style="width: 25%;" src="./res/image/flags/music_icon_' + SongData.sync_flag + '.png" />\n' +
+        '                                <img class="mdui-col" style="width: 25%;" src="./res/image/variants/' + SongData.deluxe + '.png" />\n' +
         '                            </div>\n' +
         '                        </div>\n' +
         '                    </div>\n' +
         '                </div>\n' +
         '                <div>\n' +
-        '                    <p style="color:white;">Rating:' + SongData.Rating + '<br>Score:' + SongData.score + '%</p>\n' +
+        '                    <div style="color:white;">Rating:' + Math.trunc(SongData.Rating) + ' LV:' + SongData.InternalLv + '<br>Score:' + SongData.score + '%</div>\n' +
         '                </div>\n' +
         '            </div>';
 
@@ -199,43 +218,43 @@ function Rating(Achv, InternalLv) {
     var Rating;
     var Title;
     if (Achv >= 100.5) {
-        Rating = Math.trunc(InternalLv * 22.4 * 100.5 * 0.01);
+        Rating = InternalLv * 22.4 * 100.5 * 0.01;
         Title = "SSS+";
     } else if (Achv >= 100) {
-        Rating = Math.trunc(InternalLv * 21.6 * Achv * 0.01);
+        Rating = InternalLv * 21.6 * Achv * 0.01;
         Title = "SSS";
     } else if (Achv >= 99.5) {
-        Rating = Math.trunc(InternalLv * 21.1 * Achv * 0.01);
+        Rating = InternalLv * 21.1 * Achv * 0.01;
         Title = "SS+";
     } else if (Achv >= 99) {
-        Rating = Math.trunc(InternalLv * 20.8 * Achv * 0.01);
+        Rating = InternalLv * 20.8 * Achv * 0.01;
         Title = "SS";
     } else if (Achv >= 98) {
-        Rating = Math.trunc(InternalLv * 20.3 * Achv * 0.01);
+        Rating = InternalLv * 20.3 * Achv * 0.01;
         Title = "S+";
     } else if (Achv >= 97) {
-        Rating = Math.trunc(InternalLv * 20 * Achv * 0.01);
+        Rating = InternalLv * 20 * Achv * 0.01;
         Title = "S";
     } else if (Achv >= 94) {
-        Rating = Math.trunc(InternalLv * 16.8 * Achv * 0.01);
+        Rating = InternalLv * 16.8 * Achv * 0.01;
         Title = "AAA";
     } else if (Achv >= 90) {
-        Rating = Math.trunc(InternalLv * 15.2 * Achv * 0.01);
+        Rating = InternalLv * 15.2 * Achv * 0.01;
         Title = "AA";
     } else if (Achv >= 80) {
-        Rating = Math.trunc(InternalLv * 13.6 * Achv * 0.01);
+        Rating = InternalLv * 13.6 * Achv * 0.01;
         Title = "A";
     } else if (Achv >= 75) {
-        Rating = Math.trunc(InternalLv * 12 * Achv * 0.01);
+        Rating = InternalLv * 12 * Achv * 0.01;
         Title = "BBB";
     } else if (Achv >= 70) {
-        Rating = Math.trunc(InternalLv * 11.2 * Achv * 0.01);
+        Rating = InternalLv * 11.2 * Achv * 0.01;
         Title = "BB";
     } else if (Achv >= 60) {
-        Rating = Math.trunc(InternalLv * 9.6 * Achv * 0.01);
+        Rating = InternalLv * 9.6 * Achv * 0.01;
         Title = "B";
     } else if (Achv >= 50) {
-        Rating = Math.trunc(InternalLv * 8 * Achv * 0.01);
+        Rating = InternalLv * 8 * Achv * 0.01;
         Title = "C";
     } else {
         Rating = 0;
