@@ -47,7 +47,17 @@ $(document).ready(function() {
         });
 
     });
+
+    $("#OutputImage").click(function() {
+        html2canvas(document.body, {
+            useCORS: true, // 允许跨域
+            onrendered: function(canvas) {
+                document.body.appendChild(canvas);
+            }
+        });
+    });
 });
+
 
 function ShowScore(b50) {
     var i = 0;
