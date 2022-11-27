@@ -237,6 +237,7 @@ function RatingGeneratet() {
         ScoreMix[i]["Title"] = Detail.title;
         ScoreMix[i]["Version"] = Difficulty.version;
         ScoreMix[i]["InternalLv"] = InternalLv;
+        ScoreMix[i]["category"] = RatingMix.category;
         i = i + 1;
     }
 
@@ -251,6 +252,7 @@ function AddCover(SongData) {
     while (i < SongData.length) {
         SongDetail = (MusicDB.songs).find(array => array.title === SongData[i].Title);
         SongData[i].imageName = SongDetail.imageName;
+        SongData[i].category = SongDetail.category;
         i = i + 1;
     }
     return SongData;
@@ -263,46 +265,46 @@ function Rating(Achv, InternalLv) {
     var Title;
     if (Achv >= 100.5) {
         Rating = InternalLv * 22.4 * 100.5 * 0.01;
-        Title = "SSS+";
+        Title = 13;
     } else if (Achv >= 100) {
         Rating = InternalLv * 21.6 * Achv * 0.01;
-        Title = "SSS";
+        Title = 12;
     } else if (Achv >= 99.5) {
         Rating = InternalLv * 21.1 * Achv * 0.01;
-        Title = "SS+";
+        Title = 11;
     } else if (Achv >= 99) {
         Rating = InternalLv * 20.8 * Achv * 0.01;
-        Title = "SS";
+        Title = 10;
     } else if (Achv >= 98) {
         Rating = InternalLv * 20.3 * Achv * 0.01;
-        Title = "S+";
+        Title = 9;
     } else if (Achv >= 97) {
         Rating = InternalLv * 20 * Achv * 0.01;
-        Title = "S";
+        Title = 8;
     } else if (Achv >= 94) {
         Rating = InternalLv * 16.8 * Achv * 0.01;
-        Title = "AAA";
+        Title = 7;
     } else if (Achv >= 90) {
         Rating = InternalLv * 15.2 * Achv * 0.01;
-        Title = "AA";
+        Title = 6;
     } else if (Achv >= 80) {
         Rating = InternalLv * 13.6 * Achv * 0.01;
-        Title = "A";
+        Title = 5;
     } else if (Achv >= 75) {
         Rating = InternalLv * 12 * Achv * 0.01;
-        Title = "BBB";
+        Title = 4;
     } else if (Achv >= 70) {
         Rating = InternalLv * 11.2 * Achv * 0.01;
-        Title = "BB";
+        Title = 3;
     } else if (Achv >= 60) {
         Rating = InternalLv * 9.6 * Achv * 0.01;
-        Title = "B";
+        Title = 2;
     } else if (Achv >= 50) {
         Rating = InternalLv * 8 * Achv * 0.01;
-        Title = "C";
+        Title = 1;
     } else {
         Rating = 0;
-        Title = "D";
+        Title = 0;
     }
     return { Rating: Rating, Title: Title };
 }
