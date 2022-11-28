@@ -34,65 +34,86 @@ function draw(b50Data) {
     var canvas = document.getElementById('GameDataCanvas');
     if (!canvas.getContext) return;
     var ctx = canvas.getContext("2d");
-
+    var UserInfo = UserData.data.dx_intl_players[0].dx_intl_record;
     var img = LoadData(b50Data);
-    console.log(img);
 
     img.logo.onload = function() {
+        //NamePlate
+        var x = 390,
+            y = 35;
+        //姓名框底图
+        ctx.drawImage(img.NamePlate.Background, x, y, 942, 152);
+        //icon
+        ctx.drawImage(img.NamePlate.Icon, x + 13, y + 11, 129, 129);
+        //称号
+        ctx.drawImage(img.NamePlate.trophy[UserInfo.trophy], x + 150, y + 15, 355, 26);
+        //NameBox
+        ctx.drawImage(img.NamePlate.name, x + 150, y + 53, 175, 34);
+        //Rating
+        ctx.drawImage(img.NamePlate.ratings[PureetoProcess(UserInfo)], x + 150, y + 95, 148, 43);
+
+        //PureetoProcess(UserInfo);
 
         //b50
         var i = 0,
             j = 0,
-            k = 0,
-            x = 40,
-            y = 255;
+            k = 0;
+
+        x = 40;
+        y = 255;
         //b35
         while (j < 7) {
             while (i < 5) {
-                //难度框
-                ctx.drawImage(img.CoverColor[b50Data.Oldb35[k].difficulty], x + (370 * i), y + (140 * j), 350, 130);
-                //乐曲封面
-                ctx.drawImage(img.b35[k], x + (370 * i) + 10, y + (140 * j) + 10, 106, 105);
-                //成绩标识图
-                ctx.drawImage(img.rate[b50Data.Oldb35[k].ScoreName], x + (370 * i) + 260, y + (140 * j) + 55, 85, 29);
-                //新旧曲
-                if (b50Data.Oldb35[k].deluxe) {
-                    ctx.drawImage(img.deluxe[1], x + (370 * i) + 10, y + (140 * j) + 103, 33, 37);
+                //检测是否有数据
+                if (img.b35[i] != null) {
+                    //难度框
+                    ctx.drawImage(img.CoverColor[b50Data.Oldb35[k].difficulty], x + (370 * i), y + (140 * j), 350, 130);
+                    //乐曲封面
+                    ctx.drawImage(img.b35[k], x + (370 * i) + 10, y + (140 * j) + 10, 106, 105);
+                    //成绩标识图
+                    ctx.drawImage(img.rate[b50Data.Oldb35[k].ScoreName], x + (370 * i) + 260, y + (140 * j) + 55, 85, 29);
+                    //新旧曲
+                    if (b50Data.Oldb35[k].deluxe) {
+                        ctx.drawImage(img.deluxe[1], x + (370 * i) + 10, y + (140 * j) + 103, 33, 37);
+                    } else {
+                        ctx.drawImage(img.deluxe[0], x + (370 * i) + 10, y + (140 * j) + 103, 33, 37);
+                    }
+                    //连击徽章
+                    ctx.drawImage(img.flags['music_icon_' + b50Data.Oldb35[k].combo_flag], x + (370 * i) + 255, y + (140 * j) + 87, 42, 47);
+                    //友人徽章
+                    ctx.drawImage(img.flags['music_icon_' + b50Data.Oldb35[k].sync_flag], x + (370 * i) + 300, y + (140 * j) + 87, 42, 47);
+                    //可否再此基础上加Rating
+                    if (b50Data.Oldb35[k].score >= 100.5) {
+                        ctx.drawImage(img.flags['music_icon_max'], x + (370 * i) + 90, y + (140 * j) + 115, 25, 15);
+                    }
+                    //乐曲名
+                    ctx.font = '20px Roboto';
+                    ctx.fillStyle = "white";
+                    ctx.textBaseline = "top";
+                    if (b50Data.Oldb35[k].Title.length > 9) {
+                        b50Data.Oldb35[k].Title = b50Data.Oldb35[k].Title.substring(0, 10) + '...';
+                    }
+                    ctx.fillText(b50Data.Oldb35[k].Title, x + (370 * i) + 140, y + (140 * j) + 15, 150);
+                    //乐曲种类
+                    ctx.font = '10px Roboto';
+                    ctx.fillText(b50Data.Oldb35[k].category, x + (370 * i) + 140, y + (140 * j) + 37, 150);
+                    //乐曲得分
+                    ctx.font = 'normal bold 30px Roboto';
+                    ctx.fillStyle = "#fadf62";
+                    ctx.fillText(String(b50Data.Oldb35[k].score).split(".")[0] + '.', x + (370 * i) + 135, y + (140 * j) + 60, 150);
+                    ctx.font = 'normal bold 17px Roboto';
+                    if (String(b50Data.Oldb35[k].score).split(".")[0].length == 3) {
+                        ctx.fillText(String(b50Data.Oldb35[k].score).split(".")[1], x + (370 * i) + 197, y + (140 * j) + 70, 150);
+                    } else {
+                        ctx.fillText(String(b50Data.Oldb35[k].score).split(".")[1], x + (370 * i) + 180, y + (140 * j) + 70, 150);
+                    }
+                    ctx.font = 'normal bold 20px Roboto';
+                    ctx.fillStyle = "black";
+                    ctx.fillText(b50Data.Oldb35[k].InternalLv + ' -> ' + Math.trunc(b50Data.Oldb35[k].Rating), x + (370 * i) + 135, y + (140 * j) + 103, 150);
                 } else {
-                    ctx.drawImage(img.deluxe[0], x + (370 * i) + 10, y + (140 * j) + 103, 33, 37);
+                    ctx.drawImage(img.CoverColor[5], x + (370 * i), y + (140 * j), 350, 130);
                 }
-                //连击徽章
-                ctx.drawImage(img.flags['music_icon_' + b50Data.Oldb35[k].combo_flag], x + (370 * i) + 255, y + (140 * j) + 87, 42, 47);
-                //友人徽章
-                ctx.drawImage(img.flags['music_icon_' + b50Data.Oldb35[k].sync_flag], x + (370 * i) + 300, y + (140 * j) + 87, 42, 47);
-                //可否再此基础上加Rating
-                if (b50Data.Oldb35[k].score >= 100.5) {
-                    ctx.drawImage(img.flags['music_icon_max'], x + (370 * i) + 90, y + (140 * j) + 115, 25, 15);
-                }
-                //乐曲名
-                ctx.font = '20px Roboto';
-                ctx.fillStyle = "white";
-                ctx.textBaseline = "top";
-                if (b50Data.Oldb35[k].Title.length > 9) {
-                    b50Data.Oldb35[k].Title = b50Data.Oldb35[k].Title.substring(0, 10) + '...';
-                }
-                ctx.fillText(b50Data.Oldb35[k].Title, x + (370 * i) + 140, y + (140 * j) + 15, 150);
-                //乐曲种类
-                ctx.font = '10px Roboto';
-                ctx.fillText(b50Data.Oldb35[k].category, x + (370 * i) + 140, y + (140 * j) + 37, 150);
-                //乐曲得分
-                ctx.font = 'normal bold 30px Roboto';
-                ctx.fillStyle = "#fadf62";
-                ctx.fillText(String(b50Data.Oldb35[k].score).split(".")[0] + '.', x + (370 * i) + 135, y + (140 * j) + 60, 150);
-                ctx.font = 'normal bold 17px Roboto';
-                if (String(b50Data.Oldb35[k].score).split(".")[0].length == 3) {
-                    ctx.fillText(String(b50Data.Oldb35[k].score).split(".")[1], x + (370 * i) + 197, y + (140 * j) + 70, 150);
-                } else {
-                    ctx.fillText(String(b50Data.Oldb35[k].score).split(".")[1], x + (370 * i) + 180, y + (140 * j) + 70, 150);
-                }
-                ctx.font = 'normal bold 20px Roboto';
-                ctx.fillStyle = "black";
-                ctx.fillText(b50Data.Oldb35[k].InternalLv + ' -> ' + Math.trunc(b50Data.Oldb35[k].Rating), x + (370 * i) + 135, y + (140 * j) + 103, 150);
+
 
                 k = k + 1;
                 i = i + 1;
@@ -107,42 +128,48 @@ function draw(b50Data) {
         //b15
         while (j < 3) {
             while (i < 5) {
-                ctx.drawImage(img.CoverColor[b50Data.Newb15[k].difficulty], x + (370 * i), y + (140 * j), 350, 130);
-                ctx.drawImage(img.b15[k], x + (370 * i) + 10, y + (140 * j) + 10, 106, 105);
-                ctx.drawImage(img.rate[b50Data.Newb15[k].ScoreName], x + (370 * i) + 260, y + (140 * j) + 55, 85, 29);
-                if (b50Data.Newb15[k].deluxe) {
-                    ctx.drawImage(img.deluxe[1], x + (370 * i) + 10, y + (140 * j) + 103, 33, 37);
+                if (img.b15[i] != null) {
+                    ctx.drawImage(img.CoverColor[b50Data.Newb15[k].difficulty], x + (370 * i), y + (140 * j), 350, 130);
+                    ctx.drawImage(img.b15[k], x + (370 * i) + 10, y + (140 * j) + 10, 106, 105);
+                    ctx.drawImage(img.rate[b50Data.Newb15[k].ScoreName], x + (370 * i) + 260, y + (140 * j) + 55, 85, 29);
+                    if (b50Data.Newb15[k].deluxe) {
+                        ctx.drawImage(img.deluxe[1], x + (370 * i) + 10, y + (140 * j) + 103, 33, 37);
+                    } else {
+                        ctx.drawImage(img.deluxe[0], x + (370 * i) + 10, y + (140 * j) + 103, 33, 37);
+                    }
+                    ctx.drawImage(img.flags['music_icon_' + b50Data.Newb15[k].combo_flag], x + (370 * i) + 255, y + (140 * j) + 87, 42, 47);
+                    ctx.drawImage(img.flags['music_icon_' + b50Data.Newb15[k].sync_flag], x + (370 * i) + 300, y + (140 * j) + 87, 42, 47);
+                    //可否再此基础上加Rating
+                    if (b50Data.Newb15[k].score >= 100.5) {
+                        ctx.drawImage(img.flags['music_icon_max'], x + (370 * i) + 90, y + (140 * j) + 115, 25, 15);
+                    }
+                    ctx.font = '20px Roboto';
+                    ctx.fillStyle = "white";
+                    ctx.textBaseline = "top";
+                    if (b50Data.Newb15[k].Title.length > 9) {
+                        b50Data.Newb15[k].Title = b50Data.Newb15[k].Title.substring(0, 10) + '...';
+                    }
+                    ctx.fillText(b50Data.Newb15[k].Title, x + (370 * i) + 140, y + (140 * j) + 15, 150);
+                    ctx.font = '10px Roboto';
+                    ctx.fillText(b50Data.Newb15[k].category, x + (370 * i) + 140, y + (140 * j) + 37, 150);
+                    //乐曲得分
+                    ctx.font = 'normal bold 30px Roboto';
+                    ctx.fillStyle = "#fadf62";
+                    ctx.fillText(String(b50Data.Newb15[k].score).split(".")[0] + '.', x + (370 * i) + 135, y + (140 * j) + 60, 150);
+                    ctx.font = 'normal bold 17px Roboto';
+                    if (String(b50Data.Newb15[k].score).split(".")[0].length == 3) {
+                        ctx.fillText(String(b50Data.Newb15[k].score).split(".")[1], x + (370 * i) + 197, y + (140 * j) + 70, 150);
+                    } else {
+                        ctx.fillText(String(b50Data.Newb15[k].score).split(".")[1], x + (370 * i) + 180, y + (140 * j) + 70, 150);
+                    }
+                    ctx.font = 'normal bold 20px Roboto';
+                    ctx.fillStyle = "black";
+                    ctx.fillText(b50Data.Newb15[k].InternalLv + ' -> ' + Math.trunc(b50Data.Newb15[k].Rating), x + (370 * i) + 135, y + (140 * j) + 103, 150);
+
                 } else {
-                    ctx.drawImage(img.deluxe[0], x + (370 * i) + 10, y + (140 * j) + 103, 33, 37);
+                    ctx.drawImage(img.CoverColor[5], x + (370 * i), y + (140 * j), 350, 130);
                 }
-                ctx.drawImage(img.flags['music_icon_' + b50Data.Newb15[k].combo_flag], x + (370 * i) + 255, y + (140 * j) + 87, 42, 47);
-                ctx.drawImage(img.flags['music_icon_' + b50Data.Newb15[k].sync_flag], x + (370 * i) + 300, y + (140 * j) + 87, 42, 47);
-                //可否再此基础上加Rating
-                if (b50Data.Newb15[k].score >= 100.5) {
-                    ctx.drawImage(img.flags['music_icon_max'], x + (370 * i) + 90, y + (140 * j) + 115, 25, 15);
-                }
-                ctx.font = '20px Roboto';
-                ctx.fillStyle = "white";
-                ctx.textBaseline = "top";
-                if (b50Data.Newb15[k].Title.length > 9) {
-                    b50Data.Newb15[k].Title = b50Data.Newb15[k].Title.substring(0, 10) + '...';
-                }
-                ctx.fillText(b50Data.Newb15[k].Title, x + (370 * i) + 140, y + (140 * j) + 15, 150);
-                ctx.font = '10px Roboto';
-                ctx.fillText(b50Data.Newb15[k].category, x + (370 * i) + 140, y + (140 * j) + 37, 150);
-                //乐曲得分
-                ctx.font = 'normal bold 30px Roboto';
-                ctx.fillStyle = "#fadf62";
-                ctx.fillText(String(b50Data.Newb15[k].score).split(".")[0] + '.', x + (370 * i) + 135, y + (140 * j) + 60, 150);
-                ctx.font = 'normal bold 17px Roboto';
-                if (String(b50Data.Newb15[k].score).split(".")[0].length == 3) {
-                    ctx.fillText(String(b50Data.Newb15[k].score).split(".")[1], x + (370 * i) + 197, y + (140 * j) + 70, 150);
-                } else {
-                    ctx.fillText(String(b50Data.Newb15[k].score).split(".")[1], x + (370 * i) + 180, y + (140 * j) + 70, 150);
-                }
-                ctx.font = 'normal bold 20px Roboto';
-                ctx.fillStyle = "black";
-                ctx.fillText(b50Data.Newb15[k].InternalLv + ' -> ' + Math.trunc(b50Data.Newb15[k].Rating), x + (370 * i) + 135, y + (140 * j) + 103, 150);
+
                 i = i + 1;
                 k = k + 1;
             }
@@ -154,12 +181,78 @@ function draw(b50Data) {
 }
 
 function LoadData(b50Data) {
-    var img = { CoverColor: [], rate: [], deluxe: [], b35: [], b15: [], logo: null, flags: {} };
+    var img = { CoverColor: [], rate: [], deluxe: [], b35: [], b15: [], logo: null, flags: {}, NamePlate: { trophy: {}, ratings: {} } };
     var i = 0;
 
+    //NamePlate
+    //背图
+    img.NamePlate.Background = new Image();
+    img.NamePlate.Background.src = './res/image/name_plate/1.png';
+    img.NamePlate.Background.onload = function() { progress = progress + 1; };
+    //icon
+    img.NamePlate.Icon = new Image();
+    img.NamePlate.Icon.src = './res/image/icon/1.png';
+    img.NamePlate.Icon.onload = function() { progress = progress + 1; };
+    //称号
+    img.NamePlate.trophy['normal'] = new Image();
+    img.NamePlate.trophy['normal'].src = './res/image/trophy/normal.png';
+    img.NamePlate.trophy['normal'].onload = function() { progress = progress + 1; };
+    img.NamePlate.trophy['bronze'] = new Image();
+    img.NamePlate.trophy['bronze'].src = './res/image/trophy/bronze.png';
+    img.NamePlate.trophy['bronze'].onload = function() { progress = progress + 1; };
+    img.NamePlate.trophy['silver'] = new Image();
+    img.NamePlate.trophy['silver'].src = './res/image/trophy/silver.png';
+    img.NamePlate.trophy['silver'].onload = function() { progress = progress + 1; };
+    img.NamePlate.trophy['gold'] = new Image();
+    img.NamePlate.trophy['gold'].src = './res/image/trophy/gold.png';
+    img.NamePlate.trophy['gold'].onload = function() { progress = progress + 1; };
+    img.NamePlate.trophy['rainbow'] = new Image();
+    img.NamePlate.trophy['rainbow'].src = './res/image/trophy/rainbow.png';
+    img.NamePlate.trophy['rainbow'].onload = function() { progress = progress + 1; };
+    //姓名
+    img.NamePlate.name = new Image();
+    img.NamePlate.name.src = './res/image/name/name_box.png';
+    img.NamePlate.name.onload = function() { progress = progress + 1; };
+    //ratings
+    img.NamePlate.ratings['normal'] = new Image();
+    img.NamePlate.ratings['normal'].src = './res/image/ratings/normal.svg';
+    img.NamePlate.ratings['normal'].onload = function() { progress = progress + 1; };
+    img.NamePlate.ratings['blue'] = new Image();
+    img.NamePlate.ratings['blue'].src = './res/image/ratings/blue.svg';
+    img.NamePlate.ratings['blue'].onload = function() { progress = progress + 1; };
+    img.NamePlate.ratings['green'] = new Image();
+    img.NamePlate.ratings['green'].src = './res/image/ratings/green.svg';
+    img.NamePlate.ratings['green'].onload = function() { progress = progress + 1; };
+    img.NamePlate.ratings['orange'] = new Image();
+    img.NamePlate.ratings['orange'].src = './res/image/ratings/orange.svg';
+    img.NamePlate.ratings['orange'].onload = function() { progress = progress + 1; };
+    img.NamePlate.ratings['red'] = new Image();
+    img.NamePlate.ratings['red'].src = './res/image/ratings/red.svg';
+    img.NamePlate.ratings['red'].onload = function() { progress = progress + 1; };
+    img.NamePlate.ratings['purple'] = new Image();
+    img.NamePlate.ratings['purple'].src = './res/image/ratings/purple.svg';
+    img.NamePlate.ratings['purple'].onload = function() { progress = progress + 1; };
+    img.NamePlate.ratings['bronze'] = new Image();
+    img.NamePlate.ratings['bronze'].src = './res/image/ratings/bronze.svg';
+    img.NamePlate.ratings['bronze'].onload = function() { progress = progress + 1; };
+    img.NamePlate.ratings['silver'] = new Image();
+    img.NamePlate.ratings['silver'].src = './res/image/ratings/silver.svg';
+    img.NamePlate.ratings['silver'].onload = function() { progress = progress + 1; };
+    img.NamePlate.ratings['gold'] = new Image();
+    img.NamePlate.ratings['gold'].src = './res/image/ratings/gold.svg';
+    img.NamePlate.ratings['gold'].onload = function() { progress = progress + 1; };
+    img.NamePlate.ratings['platinum'] = new Image();
+    img.NamePlate.ratings['platinum'].src = './res/image/ratings/platinum.svg';
+    img.NamePlate.ratings['platinum'].onload = function() { progress = progress + 1; };
+    img.NamePlate.ratings['rainbow'] = new Image();
+    img.NamePlate.ratings['rainbow'].src = './res/image/ratings/rainbow.svg';
+    img.NamePlate.ratings['rainbow'].onload = function() { progress = progress + 1; };
+
+
+    //B50
     //封面b35
     i = 0;
-    while (i < 35) {
+    while (i < b50Data.Oldb35.length) {
         img.b35[i] = new Image();
         img.b35[i].crossOrigin = 'Anonymous';
         img.b35[i].src = 'https://dp4p6x0xfi5o9.cloudfront.net/maimai/img/cover-m/' + b50Data.Oldb35[i].imageName + '?123456';
@@ -168,7 +261,7 @@ function LoadData(b50Data) {
     }
     //封面b15
     i = 0;
-    while (i < 15) {
+    while (i < b50Data.Newb15.length) {
         img.b15[i] = new Image();
         img.b15[i].crossOrigin = 'Anonymous';
         img.b15[i].src = 'https://dp4p6x0xfi5o9.cloudfront.net/maimai/img/cover-m/' + b50Data.Newb15[i].imageName + '?123456';
@@ -177,8 +270,8 @@ function LoadData(b50Data) {
     }
 
     i = 0;
-    //绿到白
-    while (i < 5) {
+    //绿到白（含空）
+    while (i < 6) {
         img.CoverColor[i] = new Image();
         img.CoverColor[i].src = './res/image/cover_color/' + i + '.png';
         img.CoverColor[i].onload = function() { progress = progress + 1; };
@@ -223,21 +316,23 @@ function LoadData(b50Data) {
     img.flags["music_icon_fs+"] = new Image();
     img.flags["music_icon_fs+"].src = './res/image/flags/music_icon_fs+.png';
     img.flags["music_icon_fs+"].onload = function() { progress = progress + 1; };
-    img.flags["music_icon_fsd"] = new Image();
-    img.flags["music_icon_fsd"].src = './res/image/flags/music_icon_fsd.png';
-    img.flags["music_icon_fsd"].onload = function() { progress = progress + 1; };
-    img.flags["music_icon_fsd+"] = new Image();
-    img.flags["music_icon_fsd+"].src = './res/image/flags/music_icon_fsd+.png';
-    img.flags["music_icon_fsd+"].onload = function() { progress = progress + 1; };
+    img.flags["music_icon_fdx"] = new Image();
+    img.flags["music_icon_fdx"].src = './res/image/flags/music_icon_fdx.png';
+    img.flags["music_icon_fdx"].onload = function() { progress = progress + 1; };
+    img.flags["music_icon_fdx+"] = new Image();
+    img.flags["music_icon_fdx+"].src = './res/image/flags/music_icon_fdx+.png';
+    img.flags["music_icon_fdx+"].onload = function() { progress = progress + 1; };
     img.flags["music_icon_max"] = new Image();
     img.flags["music_icon_max"].src = './res/image/flags/music_icon_max.png';
     img.flags["music_icon_max"].onload = function() { progress = progress + 1; };
 
 
-
+    //LOGO
     img.logo = new Image();
     img.logo.src = './res/image/logo/logo.png';
     img.logo.onload = function() { progress = progress + 1; };
+
+
 
     return img;
 

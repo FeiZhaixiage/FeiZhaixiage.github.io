@@ -63,28 +63,9 @@ $(document).ready(function() {
 
 });
 
-
-
-
-
-function ShowScore(b50) {
-
-    var i = 0;
-    while (i < 35) {
-        $("#B35").before(InfoCard(b50.Oldb35[i]));
-        i = i + 1;
-    }
-
-    i = 0;
-    while (i < 15) {
-        $("#B15").before(InfoCard(b50.Newb15[i]));
-        i = i + 1;
-    }
-}
-
-function ShowUserInfo(UserInfo) {
+function PureetoProcess(UserInfo) {
+    var Pureeto;
     //没想好起啥名字直接用的プレート
-    var Pureeto
     if (UserInfo.rating >= 15000) {
         Pureeto = "rainbow";
     } else if (UserInfo.rating >= 14500) {
@@ -108,8 +89,30 @@ function ShowUserInfo(UserInfo) {
     } else {
         Pureeto = "normal";
     }
+    return Pureeto;
+}
+
+
+
+
+function ShowScore(b50) {
+
+    var i = 0;
+    while (i < 35) {
+        $("#B35").before(InfoCard(b50.Oldb35[i]));
+        i = i + 1;
+    }
+
+    i = 0;
+    while (i < 15) {
+        $("#B15").before(InfoCard(b50.Newb15[i]));
+        i = i + 1;
+    }
+}
+
+function ShowUserInfo(UserInfo) {
     var InfoText = '<div class="UserInfo">\n' +
-        '                <div class="rating" style="background-image: url(&quot;./res/image/ratings/' + Pureeto + '.svg&quot;);">' + UserInfo.rating + '</div>\n' +
+        '                <div class="rating" style="background-image: url(&quot;./res/image/ratings/' + PureetoProcess(UserInfo) + '.svg&quot;);">' + UserInfo.rating + '</div>\n' +
         '            </div>\n' +
         '            <div class="UserInfo">\n' +
         '                <div class="name">' + UserInfo.card_name + '</div>\n' +
