@@ -1,5 +1,5 @@
 var progress = 0;
-var progressMax = 102;
+var progressMax = 151;
 var b50Data;
 
 
@@ -40,6 +40,8 @@ function draw(b50Data, img) {
     if (!canvas.getContext) return;
     var ctx = canvas.getContext("2d");
     var UserInfo = UserData.data.dx_intl_players[0].dx_intl_record;
+    //Background
+    ctx.drawImage(img.Background, 0, 0, 1920, 1700);
     //NamePlate
     var x = 390,
         y = 35;
@@ -47,14 +49,59 @@ function draw(b50Data, img) {
     ctx.drawImage(img.NamePlate.Background, x, y, 942, 152);
     //icon
     ctx.drawImage(img.NamePlate.Icon, x + 13, y + 11, 129, 129);
-    //称号
+    //称号底板
     ctx.drawImage(img.NamePlate.trophy[UserInfo.trophy], x + 150, y + 15, 355, 26);
     //NameBox
-    ctx.drawImage(img.NamePlate.name, x + 150, y + 53, 175, 34);
+    ctx.drawImage(img.NamePlate.name, x + 150, y + 53, 215, 34);
     //Rating
     ctx.drawImage(img.NamePlate.ratings[PureetoProcess(UserInfo)], x + 150, y + 95, 148, 43);
+    //course_ranks
+    ctx.drawImage(img.NamePlate.course_ranks[UserInfo.course_rank], x + 310, y + 95, 107, 43);
+    //class_ranks
+    ctx.drawImage(img.NamePlate.class_ranks[UserInfo.class_rank], x + 430, y + 95, 77, 43);
+    //称号
+    ctx.lineWidth = 3;
+    ctx.font = '15px Roboto';
+    ctx.fillStyle = "white";
+    ctx.textBaseline = "top";
+    ctx.textAlign = "center";
+    ctx.strokeStyle = "black";
+    ctx.strokeText(UserInfo.title, x + 327, y + 21);
+    ctx.fillStyle = "white";
+    ctx.fillText(UserInfo.title, x + 327, y + 21);
+    ctx.textAlign = "start";
+    ctx.font = '25px Roboto';
+    ctx.fillStyle = "black";
+    ctx.fillText(UserInfo.card_name, x + 155, y + 60);
+    ctx.font = '22px Roboto';
+    ctx.fillStyle = "white";
+    if (UserInfo.rating >= 10000) {
+        ctx.fillText(String(UserInfo.rating)[0], x + 215, y + 108);
+        ctx.fillText(String(UserInfo.rating)[1], x + 230, y + 108);
+        ctx.fillText(String(UserInfo.rating)[2], x + 245, y + 108);
+        ctx.fillText(String(UserInfo.rating)[3], x + 260, y + 108);
+        ctx.fillText(String(UserInfo.rating)[4], x + 275, y + 108);
+    } else if (UserInfo.rating >= 1000) {
+        ctx.fillText(String(UserInfo.rating)[0], x + 230, y + 108);
+        ctx.fillText(String(UserInfo.rating)[1], x + 245, y + 108);
+        ctx.fillText(String(UserInfo.rating)[2], x + 260, y + 108);
+        ctx.fillText(String(UserInfo.rating)[3], x + 275, y + 108);
+    } else if (UserInfo.rating >= 100) {
+        ctx.fillText(String(UserInfo.rating)[0], x + 245, y + 108);
+        ctx.fillText(String(UserInfo.rating)[1], x + 260, y + 108);
+        ctx.fillText(String(UserInfo.rating)[2], x + 275, y + 108);
+    } else if (UserInfo.rating >= 10) {
+        ctx.fillText(String(UserInfo.rating)[0], x + 260, y + 108);
+        ctx.fillText(String(UserInfo.rating)[1], x + 275, y + 108);
+    } else {
+        ctx.fillText(String(UserInfo.rating), x + 275, y + 108);
+    }
 
-    //PureetoProcess(UserInfo);
+    //水印【实在不喜欢可以把true改成false（（（（ 】
+    if (true) {
+        ctx.drawImage(img.logo, x + 650, y + 18, 250, 120);
+    }
+
 
     //b50
     var i = 0,
@@ -190,7 +237,8 @@ function ImgBase() {
     this.b15 = [];
     this.logo = null;
     this.flags = {};
-    this.NamePlate = { trophy: {}, ratings: {} };
+    this.Background = null;
+    this.NamePlate = { trophy: {}, ratings: {}, course_ranks: {}, class_ranks: [] };
     //this = { CoverColor: [], rate: [], deluxe: [], b35: [], b15: [], logo: null, flags: {}, NamePlate: { trophy: {}, ratings: {} } };
 }
 
@@ -198,6 +246,11 @@ var img = new ImgBase();
 
 function LoadData(b50Data) {
     var i = 0;
+    //BackGround
+    img.Background = new Image();
+    img.Background.src = './res/image/background/1.png';
+    img.Background.onload = function() { MarkDownProgress() };
+
     //NamePlate
     //背图
     img.NamePlate.Background = new Image();
@@ -262,7 +315,31 @@ function LoadData(b50Data) {
     img.NamePlate.ratings['rainbow'].src = './res/image/ratings/rainbow.svg';
     img.NamePlate.ratings['rainbow'].onload = function() { MarkDownProgress() };
     //course_ranks
-
+    i = 0;
+    while (i < 11) {
+        img.NamePlate.course_ranks[String(i)] = new Image();
+        img.NamePlate.course_ranks[String(i)].src = './res/image/course_ranks/' + String(i) + '.svg';
+        img.NamePlate.course_ranks[String(i)].onload = function() { MarkDownProgress() };
+        i = i + 1;
+    }
+    i = 1;
+    while (i < 11) {
+        img.NamePlate.course_ranks['shin' + String(i)] = new Image();
+        img.NamePlate.course_ranks['shin' + String(i)].src = './res/image/course_ranks/shin' + String(i) + '.svg';
+        img.NamePlate.course_ranks['shin' + String(i)].onload = function() { MarkDownProgress() };
+        i = i + 1;
+    }
+    img.NamePlate.course_ranks['shinkaiden'] = new Image();
+    img.NamePlate.course_ranks['shinkaiden'].src = './res/image/course_ranks/shinkaiden.svg';
+    img.NamePlate.course_ranks['shinkaiden'].onload = function() { MarkDownProgress() };
+    //Class_Ranks
+    i = 0;
+    while (i < 26) {
+        img.NamePlate.class_ranks[i] = new Image();
+        img.NamePlate.class_ranks[i].src = './res/image/class_ranks/' + i + '.svg';
+        img.NamePlate.class_ranks[i].onload = function() { MarkDownProgress() };
+        i = i + 1;
+    }
 
     //B50
     //封面b35
