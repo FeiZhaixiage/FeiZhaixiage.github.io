@@ -316,22 +316,19 @@ function LoadData(b50Data) {
     img.NamePlate.ratings['rainbow'].onload = function() { MarkDownProgress() };
     //course_ranks
     i = 0;
-    while (i < 11) {
-        img.NamePlate.course_ranks[String(i)] = new Image();
-        img.NamePlate.course_ranks[String(i)].src = './res/image/course_ranks/' + String(i) + '.svg';
-        img.NamePlate.course_ranks[String(i)].onload = function() { MarkDownProgress() };
+    while (i < 22) {
+        if (i >= 11) {
+            img.NamePlate.course_ranks[String(i + 1)] = new Image();
+            img.NamePlate.course_ranks[String(i + 1)].src = './res/image/course_ranks/' + String(i) + '.svg';
+            img.NamePlate.course_ranks[String(i + 1)].onload = function() { MarkDownProgress() };
+        } else {
+            img.NamePlate.course_ranks[String(i)] = new Image();
+            img.NamePlate.course_ranks[String(i)].src = './res/image/course_ranks/' + String(i) + '.svg';
+            img.NamePlate.course_ranks[String(i)].onload = function() { MarkDownProgress() };
+        }
+
         i = i + 1;
     }
-    i = 1;
-    while (i < 11) {
-        img.NamePlate.course_ranks['shin' + String(i)] = new Image();
-        img.NamePlate.course_ranks['shin' + String(i)].src = './res/image/course_ranks/shin' + String(i) + '.svg';
-        img.NamePlate.course_ranks['shin' + String(i)].onload = function() { MarkDownProgress() };
-        i = i + 1;
-    }
-    img.NamePlate.course_ranks['shinkaiden'] = new Image();
-    img.NamePlate.course_ranks['shinkaiden'].src = './res/image/course_ranks/shinkaiden.svg';
-    img.NamePlate.course_ranks['shinkaiden'].onload = function() { MarkDownProgress() };
     //Class_Ranks
     i = 0;
     while (i < 26) {
