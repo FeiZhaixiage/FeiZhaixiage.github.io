@@ -2,6 +2,18 @@
 <html lang="zh-cmn-Hans">
 
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-F6X7YXDLV7"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-F6X7YXDLV7');
+    </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
     <meta name="renderer" content="webkit" />
@@ -10,17 +22,46 @@
 
     <!-- MDUI CSS -->
     <link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css" />
+    <link rel="stylesheet" href="./res/main.css" />
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="res/main.js"></script>
+    <script src="./res/UserDataCanvas.js"></script>
 
-    <title>FeiZhaixiage.github.io</title>
+    <title>MaimaiDX Rating Image</title>
 </head>
 
 <body style="background: #51bcf3;" class="mdui-theme-primary-pink mdui-theme-accent-pink">
 
     <div class="mdui-container">
-        <h1>FeiZhaixiage.github.io</h1>
-        <p>my tools, may you can use it.</p>
-        <p>Go to:<a href="https://feizhaixiage.github.io/Maimai_otohi_image/">MaimaiDX Rating Image</a></p>
+        <h1>MaimaiDX Rating Image</h1>
+        <div class="mdui-textfield mdui-textfield-floating-label">
+            <label class="mdui-textfield-label">Username</label>
+            <input class="mdui-textfield-input" value="" id="UserName" />
+        </div>
+        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="UpLoadBt">开始！</button>
+        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="OutputImage">输出图片！</button>
+        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="OutputCanvas">生成高质量图片！</button>
+        <button onclick="window.open('./help/index.html')" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="Help">这玩意咋用我不会</button>
+        <p>进度：</p>
+        <div class="mdui-progress">
+            <div id="progress" class="mdui-progress-determinate"></div>
+        </div>
+        <img id="img" />
+        <div id="GameDataCanvasBox"></div>
+        <div id="GamerData">
+            <h1>玩家信息</h1>
+            <div id="UserBox">
+            </div>
+            <h1>B35</h1>
+            <div class="mdui-row-xs-5 ">
+                <div id="B35"></div>
+            </div>
+            <h1>B15</h1>
+            <div class="mdui-row-xs-5 ">
+                <div id="B15"></div>
+            </div>
+        </div>
 
 
     </div>
