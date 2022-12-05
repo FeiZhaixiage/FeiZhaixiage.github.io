@@ -5,6 +5,10 @@ PostData["query"] = "query dxIntlSongs {\n  dx_intl_songs(order_by: [{category: 
 PostData["operationName"] = "dxIntlSongs";
 PostData["variables"] = {};
 
+window.onload = function() {
+    console.log('finish');
+};
+
 //Post到Otohi
 $.ajax({
     type: "POST",
@@ -25,6 +29,18 @@ $.get("https://dp4p6x0xfi5o9.cloudfront.net/maimai/data.json", function(data, st
 //按钮行为
 $(document).ready(function() {
     $("#UpLoadBt").click(function() {
+        var GamerDataText = '            <h1>玩家信息</h1>\n' +
+            '            <div id="UserBox">\n' +
+            '            </div>\n' +
+            '            <h1>B35</h1>\n' +
+            '            <div class="mdui-row-xs-5 ">\n' +
+            '                <div id="B35"></div>\n' +
+            '            </div>\n' +
+            '            <h1>B15</h1>\n' +
+            '            <div class="mdui-row-xs-5 ">\n' +
+            '                <div id="B15"></div>\n' +
+            '            </div>';
+        $("#GamerData").html(GamerDataText);
         var b50Data;
         PostData["operationName"] = "dxIntlRecordWithScores";
         PostData["query"] = "query dxIntlRecordWithScores($nickname: String!) {\n  dx_intl_players(where: {nickname: {_eq: $nickname}}) {\n    updated_at\n    private\n    dx_intl_record {\n      card_name\n      title\n      trophy\n      rating\n      max_rating\n      rating_legacy\n      grade\n      course_rank\n      class_rank\n      __typename\n    }\n    dx_intl_scores {\n      song_id\n      deluxe\n      difficulty\n      score\n      combo_flag\n      sync_flag\n      start\n      __typename\n    }\n    __typename\n  }\n}";
@@ -41,7 +57,7 @@ $(document).ready(function() {
                     ShowUserInfo(UserData.data.dx_intl_players[0].dx_intl_record);
                     ShowScore(b50Data);
                 } else {
-                    console.log("e");
+                    mdui.alert('输入了错误的用户名，或者Otohi服务器暂时不可用', '警告！');
                 }
             }
         });

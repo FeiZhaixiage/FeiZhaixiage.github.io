@@ -39,9 +39,10 @@
             <label class="mdui-textfield-label">Username</label>
             <input class="mdui-textfield-input" value="" id="UserName" />
         </div>
-        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="UpLoadBt">开始！</button>
-        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="OutputImage">输出图片！</button>
-        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="OutputCanvas">生成高质量图片！</button>
+        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" style="display:none;" id="UpLoadBt">开始！</button>
+        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" style="display:none;" id="OutputImage">输出图片！</button>
+        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="OutputCanvas">生成高质量图片</button>
+        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="DownloadImage" disabled>下载生成后的图片</button>
         <button onclick="window.open('./help/index.html')" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="Help">这玩意咋用我不会</button>
         <p>进度：</p>
         <div class="mdui-progress">
@@ -49,19 +50,8 @@
         </div>
         <img id="img" />
         <div id="GameDataCanvasBox"></div>
-        <div id="GamerData">
-            <h1>玩家信息</h1>
-            <div id="UserBox">
-            </div>
-            <h1>B35</h1>
-            <div class="mdui-row-xs-5 ">
-                <div id="B35"></div>
-            </div>
-            <h1>B15</h1>
-            <div class="mdui-row-xs-5 ">
-                <div id="B15"></div>
-            </div>
-        </div>
+        <div id="GamerData"></div>
+        <div style="height: 20px;"></div>
 
 
     </div>

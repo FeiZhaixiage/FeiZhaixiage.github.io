@@ -4,9 +4,10 @@ var b50Data;
 
 
 
-
+//输出大图
 $(document).ready(function() {
     $("#OutputCanvas").click(function() {
+        $('#DownloadImage').attr("disabled", "");
         PostData["operationName"] = "dxIntlRecordWithScores";
         PostData["query"] = "query dxIntlRecordWithScores($nickname: String!) {\n  dx_intl_players(where: {nickname: {_eq: $nickname}}) {\n    updated_at\n    private\n    dx_intl_record {\n      card_name\n      title\n      trophy\n      rating\n      max_rating\n      rating_legacy\n      grade\n      course_rank\n      class_rank\n      __typename\n    }\n    dx_intl_scores {\n      song_id\n      deluxe\n      difficulty\n      score\n      combo_flag\n      sync_flag\n      start\n      __typename\n    }\n    __typename\n  }\n}";
         PostData["variables"] = { nickname: $("#UserName").val() };
@@ -23,12 +24,22 @@ $(document).ready(function() {
                     LoadData(b50Data);
                     //draw(b50Data, img);
                 } else {
-                    console.log("e");
+                    mdui.alert('输入了错误的用户名，或者Otohi服务器暂时不可用', '警告！');
+                    //console.log("e");
                 }
             }
         });
 
 
+    })
+
+    $("#DownloadImage").click(function() {
+        var canvas = document.getElementById('GameDataCanvas')
+        var href = canvas.toDataURL(); // 获取canvas对应的base64编码
+        var a = document.createElement('a'); // 创建a标签
+        a.download = 'b50_' + UserData.data.dx_intl_players[0].updated_at + '.png'; // 设置图片名字
+        a.href = href;
+        a.dispatchEvent(new MouseEvent('click'));
     })
 
 });
@@ -442,6 +453,7 @@ function MarkDownProgress() {
         b50Data = null;
         img = new ImgBase();
         progress = 0;
+        $('#DownloadImage').removeAttr("disabled");
     }
 }
 
