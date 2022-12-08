@@ -1,7 +1,8 @@
 var progress = 0;
 var progressMax = 151;
 var b50Data;
-
+var UserImage = null;
+var UserInfo;
 
 
 //输出大图
@@ -20,9 +21,9 @@ $(document).ready(function() {
                 UserData = data;
                 if (UserData.data.dx_intl_players[0] != null) {
                     $("#GameDataCanvasBox").html('<canvas style="width: 100%;" id="GameDataCanvas" width="1920" height="1700"></canvas>');
-                    b50Data = b50();
-                    LoadData(b50Data);
-                    //draw(b50Data, img);
+                    UserInfo = UserData.data.dx_intl_players[0].dx_intl_record;
+                    b50Data = b50(UserData.data.dx_intl_players[0].dx_intl_scores);
+                    LoadData(b50Data, UserImage);
                 } else {
                     mdui.alert('输入了错误的用户名，或者Otohi服务器暂时不可用', '警告！');
                     //console.log("e");
@@ -44,13 +45,19 @@ $(document).ready(function() {
 
 });
 
+function OutputCanvasBook() {
+    $('#DownloadImage').attr("disabled", "");
+    $("#GameDataCanvasBox").html('<canvas style="width: 100%;" id="GameDataCanvas" width="1920" height="1700"></canvas>');
+    b50Data = b50(BookScore);
+    LoadData(b50Data, UserImage);
+}
 
 
-function draw(b50Data, img) {
+
+function draw(b50Data, img, UserInfo) {
     var canvas = document.getElementById('GameDataCanvas');
     if (!canvas.getContext) return;
     var ctx = canvas.getContext("2d");
-    var UserInfo = UserData.data.dx_intl_players[0].dx_intl_record;
     //Background
     ctx.drawImage(img.Background, 0, 0, 1920, 1700);
     //NamePlate
@@ -255,22 +262,36 @@ function ImgBase() {
 
 var img = new ImgBase();
 
-function LoadData(b50Data) {
+function LoadData(b50Data, UserImage) {
     var i = 0;
     //BackGround
     img.Background = new Image();
     img.Background.src = './res/image/background/1.png';
     img.Background.onload = function() { MarkDownProgress() };
 
-    //NamePlate
-    //背图
-    img.NamePlate.Background = new Image();
-    img.NamePlate.Background.src = './res/image/name_plate/1.png';
-    img.NamePlate.Background.onload = function() { MarkDownProgress() };
-    //icon
-    img.NamePlate.Icon = new Image();
-    img.NamePlate.Icon.src = './res/image/icon/1.png';
-    img.NamePlate.Icon.onload = function() { MarkDownProgress() };
+    if (UserImage == null || true) {
+        //NamePlate
+        //背图
+        img.NamePlate.Background = new Image();
+        img.NamePlate.Background.src = './res/image/name_plate/1.png';
+        img.NamePlate.Background.onload = function() { MarkDownProgress() };
+        //icon
+        img.NamePlate.Icon = new Image();
+        img.NamePlate.Icon.src = './res/image/icon/1.png';
+        img.NamePlate.Icon.onload = function() { MarkDownProgress() };
+    } else {
+        //NamePlate
+        //背图
+        img.NamePlate.Background = new Image();
+        img.NamePlate.Background.src = './res/image/name_plate/1.png';
+        img.NamePlate.Background.onload = function() { MarkDownProgress() };
+        //icon
+        img.NamePlate.Icon = new Image();
+        img.NamePlate.Icon.crossOrigin = 'Anonymous';
+        img.NamePlate.Icon.src = UserImage.icon;
+        img.NamePlate.Icon.onload = function() { MarkDownProgress() };
+    }
+
     //称号
     img.NamePlate.trophy['normal'] = new Image();
     img.NamePlate.trophy['normal'].src = './res/image/trophy/normal.png';
@@ -448,11 +469,11 @@ function MarkDownProgress() {
     console.log(progress);
     $("#progress").attr("style", "width: " + (progress / progressMax * 100) + "%;");
     if (progress >= progressMax) {
+        progress = 0;
         console.log("ok")
-        draw(b50Data, img);
+        draw(b50Data, img, UserInfo);
         b50Data = null;
         img = new ImgBase();
-        progress = 0;
         $('#DownloadImage').removeAttr("disabled");
     }
 }

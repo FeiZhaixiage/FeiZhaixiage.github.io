@@ -1,6 +1,14 @@
 var BookScore = [];
 var DifficultyNumber = 0;
-
+var UserInfo = { card_name: null, class_rank: null, course_rank: null, rating: null, title: null, trophy: null };
+var UserImage = { icon: null };
+UserInfo.card_name = $(".name_block")[0].innerHTML;
+UserInfo.class_rank = $(".basic_block")[0].getElementsByTagName("img")[4].src.split("class_rank_s_")[1].slice(0, -12);
+UserInfo.course_rank = $(".basic_block")[0].getElementsByTagName("img")[3].src.split("course_rank_")[1].slice(0, -12);
+UserInfo.rating = $(".rating_block")[0].innerHTML;
+UserInfo.title = $(".trophy_inner_block")[0].innerHTML.replace("\n\t\t\t\t\t<span>", "").replace("</span>\n\t\t\t\t", "");
+UserInfo.trophy = $(".trophy_block")[0].className.split(" ")[1].replace("trophy_", "").toLowerCase();
+UserImage.icon = $(".basic_block")[0].getElementsByTagName("img")[0].src;
 LoadPage(0);
 
 function GetScore(diff) {
@@ -80,9 +88,18 @@ function LoadPage(diff) {
 }
 
 function jumpPage() {
-    $("body").load("https://feizhaixiage.github.io/Maimai_otohi_image/indexbook.html", function(response, status, xhr) {
-        if (status == "success") {
-
+    $("body").html('<iframe src="https://feizhaixiage.github.io/Maimai_otohi_image/" id="feizhaixiage" frameborder="0" width="100%" height=""></iframe>');
+    var feizhaixiagePage = document.getElementById("feizhaixiage");
+    feizhaixiagePage.height = window.innerHeight + "px";
+    window.onresize = function() { feizhaixiagePage.height = window.innerHeight + "px"; };
+    if (feizhaixiagePage.attachEvent) {
+        //todo something
+        feizhaixiagePage.contentWindow.postMessage({ BookScore: BookScore, UserInfo: UserInfo, UserImage: UserImage }, "*");
+    } else {
+        feizhaixiagePage.onload = function() {
+            //todo something
+            feizhaixiagePage.contentWindow.postMessage({ BookScore: BookScore, UserInfo: UserInfo, UserImage: UserImage }, "*");
         }
-    });
+    }
+
 }

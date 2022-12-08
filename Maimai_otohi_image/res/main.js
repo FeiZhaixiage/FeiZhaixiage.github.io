@@ -53,7 +53,7 @@ $(document).ready(function() {
             success: function(data) {
                 UserData = data;
                 if (UserData.data.dx_intl_players[0] != null) {
-                    b50Data = b50();
+                    b50Data = b50(UserData.data.dx_intl_players[0].dx_intl_scores);
                     ShowUserInfo(UserData.data.dx_intl_players[0].dx_intl_record);
                     ShowScore(b50Data);
                 } else {
@@ -188,8 +188,7 @@ function InfoCard(SongData) {
 
 
 //b50
-function b50() {
-    var ScoreMix = UserData.data.dx_intl_players[0].dx_intl_scores;
+function b50(ScoreMix) {
     var RatingMix, Output;
     var OldRating = [],
         NewRating = [];
@@ -198,7 +197,7 @@ function b50() {
     var i = 0,
         j = 0,
         k = 0;
-    RatingMix = RatingGeneratet();
+    RatingMix = RatingGeneratet(ScoreMix);
     //添加封面信息
     RatingMix = AddCover(RatingMix);
 
@@ -230,9 +229,8 @@ function b50() {
 }
 
 //解析每一首歌的Rating
-function RatingGeneratet() {
+function RatingGeneratet(ScoreMix) {
     var i = 0;
-    var ScoreMix = UserData.data.dx_intl_players[0].dx_intl_scores;
     var SongMd5, Difficulty, Score, Detail, Achv, InternalLv, RatingMix;
 
     //生成Rating并放在一起

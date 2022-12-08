@@ -7,7 +7,7 @@
     <meta name="renderer" content="webkit" />
     <meta name="force-rendering" content="webkit" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.10/dist/clipboard.min.js"></script>
     <!-- MDUI CSS -->
     <link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css" />
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
@@ -48,10 +48,21 @@
                         <h2 class="doc-chapter-title mdui-text-color-theme">准备工作
                             <a class="doc-anchor" id="prepare"></a>
                         </h2>
+                        <h4>方法1：</h4>
                         <p>进入<a href="https://otohi.me/">Otohime</a>，注册账号并创建成绩单。</p>
                         <p>*成绩单隐私设定必须设置为公开</p>
                         <p>参考这个链接：<a href="https://littlebtc.gitbook.io/otohime-docs/bookmarklet-help">https://littlebtc.gitbook.io/otohime-docs/bookmarklet-help</a> 上传成绩到成绩单</p>
                         <p>成功之后回到【MaimaiDX Rating Image】</p>
+                        <h4>方法2 *beta：</h4>
+                        <p>使用书签获取成绩</p>
+                        <p>复制下方代码粘贴到书签即可使用，如不清楚如何添加到书签请参考：<a href="https://littlebtc.gitbook.io/otohime-docs/bookmarklet-help">https://littlebtc.gitbook.io/otohime-docs/bookmarklet-help</a></p>
+                        <div class="mdui-typo">
+                            <pre id="code">javascript:
+var s = document.createElement("script");
+s.src = "https://feizhaixiage.github.io/Maimai_otohi_image/res/bookmarklet.js"; document.body.appendChild(s);
+void(0);</pre>
+                        </div>
+                        <p>书签导入速度非常慢，请耐心等待，页面会自动跳转！</p>
                         <h2 class="doc-chapter-title mdui-text-color-theme">生成表格
                             <a class="doc-anchor" id="table"></a>
                         </h2>
