@@ -138,7 +138,7 @@ function draw(b50Data, img, UserInfo) {
                 //乐曲封面
                 ctx.drawImage(img.b35[k], x + (370 * i) + 10, y + (140 * j) + 10, 106, 105);
                 //成绩标识图
-                ctx.drawImage(img.rate[b50Data.Oldb35[k].ScoreName], x + (370 * i) + 260, y + (140 * j) + 55, 85, 29);
+                ctx.drawImage(img.rate[b50Data.Oldb35[k].ScoreName], x + (370 * i) + 260, y + (140 * j) + 55, 66, 30);
                 //新旧曲
                 if (b50Data.Oldb35[k].deluxe) {
                     ctx.drawImage(img.deluxe[1], x + (370 * i) + 10, y + (140 * j) + 103, 33, 37);
@@ -198,7 +198,7 @@ function draw(b50Data, img, UserInfo) {
             if (img.b15[i] != null) {
                 ctx.drawImage(img.CoverColor[b50Data.Newb15[k].difficulty], x + (370 * i), y + (140 * j), 350, 130);
                 ctx.drawImage(img.b15[k], x + (370 * i) + 10, y + (140 * j) + 10, 106, 105);
-                ctx.drawImage(img.rate[b50Data.Newb15[k].ScoreName], x + (370 * i) + 260, y + (140 * j) + 55, 85, 29);
+                ctx.drawImage(img.rate[b50Data.Newb15[k].ScoreName], x + (370 * i) + 260, y + (140 * j) + 55, 66, 30);
                 if (b50Data.Newb15[k].deluxe) {
                     ctx.drawImage(img.deluxe[1], x + (370 * i) + 10, y + (140 * j) + 103, 33, 37);
                 } else {
