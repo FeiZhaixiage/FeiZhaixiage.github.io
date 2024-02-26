@@ -202,7 +202,7 @@ function b50(ScoreMix) {
     RatingMix = AddCover(RatingMix);
 
     while (i < ScoreMix.length) {
-        if (RatingMix[i].Version == 20) {
+        if (RatingMix[i].Version == 21) {
             NewRating[j] = RatingMix[i];
             j = j + 1;
         } else {
